@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { format, add, sub, intervalToDuration, isValid, parseISO } from 'date-fns';
 import { zhTW } from 'date-fns/locale';
-import { Calendar as CalendarIcon, Plus, Minus, ArrowRight, CalendarPlus, Download, ExternalLink, CalendarDays, ArrowLeftRight, AlertCircle } from 'lucide-react';
+import { Solar } from 'lunar-javascript';
+import { Calendar as CalendarIcon, Plus, Minus, ArrowRight, CalendarPlus, Download, ExternalLink, CalendarDays, ArrowLeftRight, AlertCircle, Moon } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { motion, AnimatePresence } from 'motion/react';
@@ -91,6 +92,23 @@ function ErrorMessage({ message }: { message: string }) {
   );
 }
 
+function LunarInfo({ date, className }: { date: Date, className?: string }) {
+  const solar = Solar.fromDate(date);
+  const lunar = solar.getLunar();
+  
+  const lunarStr = `農曆 ${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
+  const yearStr = `${lunar.getYearInGanZhi()}${lunar.getYearShengXiao()}年`;
+  
+  return (
+    <div className={cn("flex items-center gap-2 text-stone-500 text-sm font-medium", className)}>
+      <Moon className="w-4 h-4 text-amber-500 fill-amber-500/10" />
+      <span>{yearStr}</span>
+      <span className="w-1 h-1 rounded-full bg-stone-300" />
+      <span>{lunarStr}</span>
+    </div>
+  );
+}
+
 function AddSubCalculator() {
   const [startDate, setStartDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
   const [operation, setOperation] = useState<Operation>('add');
@@ -143,6 +161,7 @@ function AddSubCalculator() {
                   : "border-stone-200 bg-stone-50 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500"
               )}
             />
+            {isValidDate && <LunarInfo date={parsedStartDate} className="mt-1 ml-1" />}
           </div>
 
           {/* Operation Toggle */}
@@ -213,6 +232,7 @@ function AddSubCalculator() {
                   {format(resultDate, 'EEEE', { locale: zhTW })}
                 </span>
               </div>
+              <LunarInfo date={resultDate} className="mt-2" />
             </div>
             
             <ReminderActions date={resultDate} />
@@ -270,6 +290,7 @@ function DiffCalculator() {
                 : "border-stone-200 bg-stone-50 focus:bg-white focus:ring-indigo-500/20 focus:border-indigo-500"
             )}
           />
+          {isValid(parsedStart) && <LunarInfo date={parsedStart} className="mt-1 ml-1" />}
         </div>
 
         <div className="hidden md:flex justify-center pt-6">
@@ -289,6 +310,7 @@ function DiffCalculator() {
                 : "border-stone-200 bg-stone-50 focus:bg-white focus:ring-indigo-500/20 focus:border-indigo-500"
             )}
           />
+          {isValid(parsedEnd) && <LunarInfo date={parsedEnd} className="mt-1 ml-1" />}
         </div>
       </div>
 
