@@ -92,12 +92,29 @@ function ErrorMessage({ message }: { message: string }) {
   );
 }
 
+const s2t: Record<string, string> = {
+  '龙': '龍',
+  '马': '馬',
+  '鸡': '雞',
+  '猪': '豬',
+  '闰': '閏',
+  '腊': '臘'
+};
+
+function toTraditional(str: string): string {
+  return str.split('').map(char => s2t[char] || char).join('');
+}
+
 function LunarInfo({ date, className }: { date: Date, className?: string }) {
   const solar = Solar.fromDate(date);
   const lunar = solar.getLunar();
   
-  const lunarStr = `農曆 ${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
-  const yearStr = `${lunar.getYearInGanZhi()}${lunar.getYearShengXiao()}年`;
+  const lunarMonth = toTraditional(lunar.getMonthInChinese());
+  const lunarDay = toTraditional(lunar.getDayInChinese());
+  const shengXiao = toTraditional(lunar.getYearShengXiao());
+  
+  const lunarStr = `農曆 ${lunarMonth}月${lunarDay}`;
+  const yearStr = `${lunar.getYearInGanZhi()}${shengXiao}年`;
   
   return (
     <div className={cn("flex items-center gap-2 text-stone-500 text-sm font-medium", className)}>
