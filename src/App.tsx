@@ -41,8 +41,8 @@ export default function App() {
               onClick={() => setActiveTab('add-sub')}
               className={cn(
                 "flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200",
-                activeTab === 'add-sub' 
-                  ? "bg-white text-indigo-700 shadow-sm border border-stone-200/60" 
+                activeTab === 'add-sub'
+                  ? "bg-white text-indigo-700 shadow-sm border border-stone-200/60"
                   : "text-stone-500 hover:text-stone-700 hover:bg-stone-100"
               )}
             >
@@ -53,8 +53,8 @@ export default function App() {
               onClick={() => setActiveTab('diff')}
               className={cn(
                 "flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200",
-                activeTab === 'diff' 
-                  ? "bg-white text-indigo-700 shadow-sm border border-stone-200/60" 
+                activeTab === 'diff'
+                  ? "bg-white text-indigo-700 shadow-sm border border-stone-200/60"
                   : "text-stone-500 hover:text-stone-700 hover:bg-stone-100"
               )}
             >
@@ -74,6 +74,9 @@ export default function App() {
             </AnimatePresence>
           </div>
         </div>
+
+        {/* SEO Content Section */}
+        <SeoContent />
       </div>
     </div>
   );
@@ -424,6 +427,72 @@ function DurationInput({ label, value, onChange }: { label: string, value: numbe
       </div>
       <span className="text-center text-xs font-bold text-stone-500 uppercase tracking-[0.2em]">{label}</span>
     </div>
+  );
+}
+
+function AdPlaceholder() {
+  return (
+    <div className="my-8 text-center bg-stone-50 border border-dashed border-stone-300 rounded-2xl py-6 px-4">
+      {/* 將此區塊替換為 AdSense 廣告代碼 */}
+      <p className="text-stone-400 text-xs">廣告贊助</p>
+    </div>
+  );
+}
+
+function SeoContent() {
+  return (
+    <article className="mt-12 space-y-8 text-stone-600 leading-relaxed">
+      <h2 className="text-2xl font-semibold text-stone-900 border-b-2 border-indigo-600 pb-3">
+        日期計算機：計算天數差距與加減日期
+      </h2>
+      <p>
+        歡迎使用 SHINLINK 免費線上工具。無論您是需要計算專案工期、追蹤合約到期日，還是規劃個人行程，我們的日期計算器都能為您提供最精準的結果，自動處理大月、小月及閏年差異。
+      </p>
+
+      <AdPlaceholder />
+
+      <section className="space-y-3">
+        <h3 className="text-xl font-semibold text-stone-800">如何計算兩個日期之間相差幾天？</h3>
+        <p>
+          在「計算天數」模式下，您只需選取「開始日期」與「結束日期」，系統便會即時算出總天數。這對於計算工作天、入職天數或距離重要日期的倒數非常實用。
+        </p>
+      </section>
+
+      <section className="space-y-3">
+        <h4 className="text-lg font-semibold text-indigo-700">包含結束日期與排除特定星期</h4>
+        <p>
+          我們的工具支援彈性設定，您可以選擇是否將結束日期納入計算（+1 天），甚至能根據需求排除週末（週六、週日），讓計算結果更符合職場實務需求。
+        </p>
+      </section>
+
+      <hr className="border-stone-200" />
+
+      <section className="space-y-3">
+        <h3 className="text-xl font-semibold text-stone-800">日期加減功能：快速算出特定時間後的日期</h3>
+        <p>
+          想要知道「三個月又兩週後」是哪一天嗎？切換至「添加天數」或「減去天數」標籤，輸入您想加減的年、月、週、天數，SHINLINK 日期計算機將立即告知您準確的目標日期與星期。
+        </p>
+      </section>
+
+      <AdPlaceholder />
+
+      <section className="space-y-3">
+        <h3 className="text-xl font-semibold text-stone-800">為什麼選擇 SHINLINK 線上日期計算器？</h3>
+        <ul className="list-disc list-inside space-y-2 ml-2">
+          <li><strong>精準無誤：</strong>自動過濾閏年（2/29）與大小月天數差異。</li>
+          <li><strong>隱私安全：</strong>所有的計算均在您的瀏覽器端完成，我們不會記錄您的個人日期資料。</li>
+          <li><strong>跨平台支援：</strong>無論是手機還是電腦，均可免下載、即開即用。</li>
+          <li><strong>整合顧問經驗：</strong>由 SHINLINK 開發團隊打造，我們深知 HR、專案經理與開發者在處理時間節點時的痛點。</li>
+        </ul>
+      </section>
+
+      <section className="space-y-3">
+        <h4 className="text-lg font-semibold text-indigo-700">多樣化的應用場景</h4>
+        <p>
+          本工具廣泛應用於：計算勞基法年資、產假/育嬰假天數、軟體開發 Sprint 週期規劃、租約到期日試算以及個人重要紀念日追蹤。
+        </p>
+      </section>
+    </article>
   );
 }
 
