@@ -43,6 +43,21 @@ export const zhHant: Translations = {
   invalidEndDate: '請輸入有效的結束日期',
   invalidBothDates: '請輸入有效的開始與結束日期',
 
+  // Advanced Options (Diff Calculator)
+  advancedOptions: '進階設定',
+  includeEndDate: '包含結束日期（+1 天）',
+  excludeWeekdays: '排除特定星期',
+  weekdayMon: '一',
+  weekdayTue: '二',
+  weekdayWed: '三',
+  weekdayThu: '四',
+  weekdayFri: '五',
+  weekdaySat: '六',
+  weekdaySun: '日',
+  totalDays: '總天數',
+  workingDays: '計算天數',
+  excludedDays: '已排除',
+
   // Reminder
   addReminder: '加入提醒',
   reminderName: '提醒事項名稱',

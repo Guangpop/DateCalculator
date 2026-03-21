@@ -43,6 +43,21 @@ export const ja: Translations = {
   invalidEndDate: '有効な終了日を入力してください',
   invalidBothDates: '有効な開始日と終了日を入力してください',
 
+  // Advanced Options (Diff Calculator)
+  advancedOptions: '詳細設定',
+  includeEndDate: '終了日を含む（+1日）',
+  excludeWeekdays: '特定曜日を除外',
+  weekdayMon: '月',
+  weekdayTue: '火',
+  weekdayWed: '水',
+  weekdayThu: '木',
+  weekdayFri: '金',
+  weekdaySat: '土',
+  weekdaySun: '日',
+  totalDays: '合計日数',
+  workingDays: '計算日数',
+  excludedDays: '除外',
+
   // Reminder
   addReminder: 'リマインダー追加',
   reminderName: 'リマインダー名',

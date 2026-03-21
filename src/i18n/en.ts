@@ -43,6 +43,21 @@ export const en: Translations = {
   invalidEndDate: 'Please enter a valid end date',
   invalidBothDates: 'Please enter valid start and end dates',
 
+  // Advanced Options (Diff Calculator)
+  advancedOptions: 'Advanced Options',
+  includeEndDate: 'Include end date (+1 day)',
+  excludeWeekdays: 'Exclude weekdays',
+  weekdayMon: 'Mon',
+  weekdayTue: 'Tue',
+  weekdayWed: 'Wed',
+  weekdayThu: 'Thu',
+  weekdayFri: 'Fri',
+  weekdaySat: 'Sat',
+  weekdaySun: 'Sun',
+  totalDays: 'Total days',
+  workingDays: 'Counted days',
+  excludedDays: 'Excluded',
+
   // Reminder
   addReminder: 'Add Reminder',
   reminderName: 'Reminder Name',

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { format, add, sub, intervalToDuration, isValid, parseISO } from 'date-fns';
 import { zhTW, enUS, ja as jaLocale } from 'date-fns/locale';
 import { Solar } from 'lunar-javascript';
-import { Calendar as CalendarIcon, Plus, Minus, ArrowRight, CalendarPlus, Download, ExternalLink, CalendarDays, ArrowLeftRight, AlertCircle, Moon, Globe } from 'lucide-react';
+import { Calendar as CalendarIcon, Plus, Minus, ArrowRight, CalendarPlus, Download, ExternalLink, CalendarDays, ArrowLeftRight, AlertCircle, Moon, Globe, ChevronDown, Settings2 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { motion, AnimatePresence } from 'motion/react';
@@ -417,14 +417,48 @@ function AddSubCalculator() {
   );
 }
 
+// Count how many times a specific weekday (0=Sun..6=Sat) occurs between two dates (exclusive of end)
+function countWeekdayOccurrences(start: Date, end: Date, excludedDays: number[]): number {
+  if (excludedDays.length === 0) return 0;
+  let count = 0;
+  const current = new Date(start);
+  while (current < end) {
+    if (excludedDays.includes(current.getDay())) {
+      count++;
+    }
+    current.setDate(current.getDate() + 1);
+  }
+  return count;
+}
+
 function DiffCalculator() {
   const { t } = useI18n();
   const [startDate, setStartDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
   const [endDate, setEndDate] = useState<string>(format(add(new Date(), { days: 30 }), 'yyyy-MM-dd'));
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [includeEndDate, setIncludeEndDate] = useState(false);
+  const [excludedDays, setExcludedDays] = useState<number[]>([]); // 0=Sun, 1=Mon, ..., 6=Sat
 
   const parsedStart = useMemo(() => parseISO(startDate), [startDate]);
   const parsedEnd = useMemo(() => parseISO(endDate), [endDate]);
   const isValidDates = isValid(parsedStart) && isValid(parsedEnd);
+
+  // Weekday buttons in display order (Mon–Sun)
+  const weekdayButtons: { day: number; label: string }[] = [
+    { day: 1, label: t.weekdayMon },
+    { day: 2, label: t.weekdayTue },
+    { day: 3, label: t.weekdayWed },
+    { day: 4, label: t.weekdayThu },
+    { day: 5, label: t.weekdayFri },
+    { day: 6, label: t.weekdaySat },
+    { day: 0, label: t.weekdaySun },
+  ];
+
+  const toggleDay = (day: number) => {
+    setExcludedDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
+  };
 
   const result = useMemo(() => {
     if (!isValidDates) return null;
@@ -433,12 +467,22 @@ function DiffCalculator() {
     const end = parsedStart < parsedEnd ? parsedEnd : parsedStart;
     const isNegative = parsedStart > parsedEnd;
 
-    const totalDays = Math.abs((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    const baseDays = Math.round(Math.abs((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
+    const totalDays = includeEndDate ? baseDays + 1 : baseDays;
+
+    const excluded = countWeekdayOccurrences(
+      start,
+      includeEndDate ? add(end, { days: 1 }) : end,
+      excludedDays
+    );
+    const countedDays = totalDays - excluded;
 
     const duration = intervalToDuration({ start, end });
 
-    return { totalDays, duration, isNegative };
-  }, [parsedStart, parsedEnd, isValidDates]);
+    return { totalDays, countedDays, excluded, duration, isNegative };
+  }, [parsedStart, parsedEnd, isValidDates, includeEndDate, excludedDays]);
+
+  const hasAdvancedActive = includeEndDate || excludedDays.length > 0;
 
   return (
     <motion.div
@@ -502,6 +546,92 @@ function DiffCalculator() {
         />
       )}
 
+      {/* Advanced Options (collapsible) */}
+      <div className="border border-stone-200 rounded-2xl overflow-hidden">
+        <button
+          onClick={() => setShowAdvanced(!showAdvanced)}
+          className="w-full flex items-center justify-between px-5 py-3.5 text-sm font-medium text-stone-600 hover:bg-stone-50 transition-colors"
+        >
+          <div className="flex items-center gap-2">
+            <Settings2 className="w-4 h-4" />
+            <span>{t.advancedOptions}</span>
+            {hasAdvancedActive && (
+              <span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-indigo-500" />
+            )}
+          </div>
+          <motion.div
+            animate={{ rotate: showAdvanced ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ChevronDown className="w-4 h-4" />
+          </motion.div>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {showAdvanced && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="px-5 pb-5 pt-2 space-y-5 border-t border-stone-100">
+                {/* Include end date toggle */}
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className="relative">
+                    <input
+                      type="checkbox"
+                      checked={includeEndDate}
+                      onChange={(e) => setIncludeEndDate(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-10 h-6 bg-stone-200 rounded-full peer-checked:bg-indigo-500 transition-colors" />
+                    <motion.div
+                      className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow-sm"
+                      animate={{ x: includeEndDate ? 16 : 0 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    />
+                  </div>
+                  <span className="text-sm text-stone-700 group-hover:text-stone-900 transition-colors">
+                    {t.includeEndDate}
+                  </span>
+                </label>
+
+                {/* Exclude weekdays */}
+                <div className="space-y-3">
+                  <span className="block text-sm text-stone-600 font-medium">
+                    {t.excludeWeekdays}
+                  </span>
+                  <div className="flex gap-2">
+                    {weekdayButtons.map(({ day, label }) => {
+                      const isExcluded = excludedDays.includes(day);
+                      const isWeekend = day === 0 || day === 6;
+                      return (
+                        <button
+                          key={day}
+                          onClick={() => toggleDay(day)}
+                          className={cn(
+                            'flex-1 py-2 rounded-xl text-sm font-semibold transition-all duration-150',
+                            isExcluded
+                              ? 'bg-indigo-100 text-indigo-700 ring-2 ring-indigo-500/30'
+                              : isWeekend
+                                ? 'bg-stone-100 text-stone-500 hover:bg-stone-200'
+                                : 'bg-stone-50 text-stone-500 hover:bg-stone-100'
+                          )}
+                        >
+                          {label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
       {/* Result Section */}
       {result && (
         <div className="mt-8 pt-8 border-t border-stone-100">
@@ -514,7 +644,7 @@ function DiffCalculator() {
               <div className="text-center">
                 <div className="flex flex-wrap items-baseline justify-center gap-2">
                   <span className="text-6xl font-semibold text-emerald-950 tracking-tight">
-                    {result.totalDays}
+                    {result.excluded > 0 ? result.countedDays : result.totalDays}
                   </span>
                   <span className="text-xl text-emerald-700/70 font-medium">{t.dayUnit}</span>
                 </div>
@@ -522,6 +652,19 @@ function DiffCalculator() {
                   <p className="text-sm text-emerald-600 mt-2">{t.startAfterEnd}</p>
                 )}
               </div>
+
+              {/* Show breakdown when advanced options are active */}
+              {result.excluded > 0 && (
+                <div className="flex items-center gap-3 text-sm font-medium">
+                  <span className="bg-emerald-100/50 text-emerald-800 px-3 py-1.5 rounded-full">
+                    {t.totalDays}: {result.totalDays}
+                  </span>
+                  <span className="text-stone-300">-</span>
+                  <span className="bg-red-50 text-red-600 px-3 py-1.5 rounded-full">
+                    {t.excludedDays}: {result.excluded}
+                  </span>
+                </div>
+              )}
 
               {result.duration.years || result.duration.months || result.duration.days ? (
                 <div className="flex items-center gap-4 text-emerald-800 bg-emerald-100/50 px-5 py-2.5 rounded-full text-sm font-medium">

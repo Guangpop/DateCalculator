@@ -43,6 +43,21 @@ export interface Translations {
   invalidEndDate: string;
   invalidBothDates: string;
 
+  // Advanced Options (Diff Calculator)
+  advancedOptions: string;
+  includeEndDate: string;
+  excludeWeekdays: string;
+  weekdayMon: string;
+  weekdayTue: string;
+  weekdayWed: string;
+  weekdayThu: string;
+  weekdayFri: string;
+  weekdaySat: string;
+  weekdaySun: string;
+  totalDays: string;
+  workingDays: string;
+  excludedDays: string;
+
   // Reminder
   addReminder: string;
   reminderName: string;
