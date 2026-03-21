@@ -29,6 +29,7 @@ export const ja: Translations = {
   unitWeek: '週',
   unitDay: '日',
   result: '計算結果',
+  resultDateFormat: 'yyyy年 MM月 dd日',
   invalidDateFormat: '正しい日付形式を入力してください（例: 2024-03-17）',
 
   // Diff Calculator

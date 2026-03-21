@@ -29,6 +29,7 @@ export const en: Translations = {
   unitWeek: 'Weeks',
   unitDay: 'Days',
   result: 'Result',
+  resultDateFormat: 'MMMM d, yyyy',
   invalidDateFormat: 'Please enter a valid date format (e.g., 2024-03-17)',
 
   // Diff Calculator

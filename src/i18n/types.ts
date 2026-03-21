@@ -29,6 +29,7 @@ export interface Translations {
   unitWeek: string;
   unitDay: string;
   result: string;
+  resultDateFormat: string;
   invalidDateFormat: string;
 
   // Diff Calculator

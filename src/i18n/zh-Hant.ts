@@ -29,6 +29,7 @@ export const zhHant: Translations = {
   unitWeek: '週',
   unitDay: '天',
   result: '計算結果',
+  resultDateFormat: 'yyyy年 MM月 dd日',
   invalidDateFormat: '請輸入正確的日期格式 (例如: 2024-03-17)',
 
   // Diff Calculator

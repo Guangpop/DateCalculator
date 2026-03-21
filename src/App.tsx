@@ -248,7 +248,7 @@ function toTraditional(str: string): string {
 }
 
 function LunarInfo({ date, className }: { date: Date; className?: string }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
 
   // Only show lunar calendar for Chinese and Japanese
   if (locale === 'en') return null;
@@ -260,8 +260,8 @@ function LunarInfo({ date, className }: { date: Date; className?: string }) {
   const lunarDay = toTraditional(lunar.getDayInChinese());
   const shengXiao = toTraditional(lunar.getYearShengXiao());
 
-  const lunarStr = `農曆 ${lunarMonth}月${lunarDay}`;
-  const yearStr = `${lunar.getYearInGanZhi()}${shengXiao}年`;
+  const lunarStr = `${t.lunarPrefix} ${lunarMonth}${t.lunarMonthSuffix}${lunarDay}`;
+  const yearStr = `${lunar.getYearInGanZhi()}${shengXiao}${t.lunarYearSuffix}`;
 
   return (
     <div className={cn('flex items-center gap-2 text-stone-500 text-sm font-medium', className)}>
@@ -400,7 +400,7 @@ function AddSubCalculator() {
               </p>
               <div className="flex flex-wrap items-baseline gap-3 justify-center md:justify-start">
                 <span className="text-3xl md:text-4xl font-semibold text-indigo-950 tracking-tight">
-                  {format(resultDate, 'yyyy年 MM月 dd日')}
+                  {format(resultDate, t.resultDateFormat, { locale: dfLocale })}
                 </span>
                 <span className="text-xl text-indigo-700/70 font-medium">
                   {format(resultDate, 'EEEE', { locale: dfLocale })}
