@@ -24,15 +24,19 @@ export const localeHtmlLang: Record<Locale, string> = {
   'ja': 'ja',
 };
 
+const BASE_PATH = '/tools/date-calculator';
+
 export const localePaths: Record<Locale, string> = {
-  'zh-Hant': '/',
-  'en': '/en/',
-  'ja': '/ja/',
+  'zh-Hant': `${BASE_PATH}/`,
+  'en': `${BASE_PATH}/en/`,
+  'ja': `${BASE_PATH}/ja/`,
 };
 
 export function pathToLocale(pathname: string): Locale {
-  if (pathname.startsWith('/en')) return 'en';
-  if (pathname.startsWith('/ja')) return 'ja';
+  // Strip base path before matching locale
+  const stripped = pathname.replace(BASE_PATH, '');
+  if (stripped.startsWith('/en')) return 'en';
+  if (stripped.startsWith('/ja')) return 'ja';
   return 'zh-Hant';
 }
 

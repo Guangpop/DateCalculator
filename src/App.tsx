@@ -26,7 +26,7 @@ function cn(...inputs: ClassValue[]) {
 type Tab = 'add-sub' | 'diff';
 type Operation = 'add' | 'sub';
 
-const BASE_URL = 'https://datecalculator.shinlink.com.tw';
+const BASE_URL = 'https://www.shinlink.com.tw/tools/date-calculator';
 
 const dateFnsLocales = {
   'zh-Hant': zhTW,
