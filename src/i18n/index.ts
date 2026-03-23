@@ -24,19 +24,24 @@ export const localeHtmlLang: Record<Locale, string> = {
   'ja': 'ja',
 };
 
-const BASE_PATH = '/tools/date-calculator';
-
+// Navigation paths (relative to BrowserRouter basename)
 export const localePaths: Record<Locale, string> = {
-  'zh-Hant': `${BASE_PATH}/`,
-  'en': `${BASE_PATH}/en/`,
-  'ja': `${BASE_PATH}/ja/`,
+  'zh-Hant': '/',
+  'en': '/en/',
+  'ja': '/ja/',
+};
+
+// Full paths for SEO URLs (canonical, hreflang, og:url)
+export const localeSeoSlugs: Record<Locale, string> = {
+  'zh-Hant': '/',
+  'en': '/en/',
+  'ja': '/ja/',
 };
 
 export function pathToLocale(pathname: string): Locale {
-  // Strip base path before matching locale
-  const stripped = pathname.replace(BASE_PATH, '');
-  if (stripped.startsWith('/en')) return 'en';
-  if (stripped.startsWith('/ja')) return 'ja';
+  // BrowserRouter strips basename, so pathname is relative
+  if (pathname.startsWith('/en')) return 'en';
+  if (pathname.startsWith('/ja')) return 'ja';
   return 'zh-Hant';
 }
 
