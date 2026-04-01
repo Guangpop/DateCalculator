@@ -1,20 +1,18 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 日期計算機 | SHINLINK
 
-# Run and deploy your AI Studio app
+多功能日期計算工具，支援繁體中文、英文、日文三種語言。
 
-This contains everything you need to run your app locally.
+## 功能
 
-View your app in AI Studio: https://ai.studio/apps/83239ce7-b7a2-4387-80b9-4204a6f172f7
+- 計算兩個日期之間的天數差距
+- 日期加減（年、月、週、日）
+- 農曆/陰曆資訊顯示
+- 行事曆提醒整合
+- 多語系支援（繁中、英文、日文）
 
-## Run Locally
+## 開發
 
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm install
+npm run dev
+```
